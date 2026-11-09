@@ -1,4 +1,5 @@
 load("@core//runtime:install.bzl", "pkg_install")
+load("@core//runtime:runtime.bzl", "runtime_module")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "strip_prefix")
 
@@ -250,4 +251,16 @@ filegroup(
 filegroup(
     name = "prediction_testdata",
     srcs = glob(["testdata/**"]),
+)
+
+runtime_module(
+    name = "module",
+    components = [":libprediction_component.so"],
+    files = {
+        "conf/prediction_conf.pb.txt": "conf/prediction/prediction_conf.pb.txt",
+        "runtime/prediction.conf": "conf/prediction/prediction.conf",
+        "runtime/prediction.dag": "dag/prediction/prediction.dag",
+        "runtime/prediction.launch": "launch/prediction/prediction.launch",
+    },
+    module_name = "prediction",
 )
